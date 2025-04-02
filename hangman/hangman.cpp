@@ -1,6 +1,6 @@
 #include "hangman.h"
 
-hangman::hangman(std::string file_path)
+hangman::hangman(std::wstring file_path)
 {
 	word_list = import_words(file_path);
 }
@@ -10,15 +10,15 @@ void hangman::play()
 	std::system("cls");
 	int word_to_play = rand()% word_list.size();
 	word = word_list[word_to_play];
-	char_list = std::string(word.size(), '_');
+	char_list = std::wstring(word.size(), '_');
 	misses = 0;
-	guesses = "";
+	guesses = L"";
 	char game_stat = 'c';
 	while (game_stat == 'c')
 	{
 		draw_hangman();
 		draw_word();
-		std::string guess = get_input();
+		std::wstring guess = get_input();
 		guesses += guess;
 		guesses += ' ';
 		misses += uppdate_char_list(guess);
@@ -35,27 +35,27 @@ void hangman::play()
 	}
 }
 
-std::vector<std::string> hangman::import_words(std::string path)
+std::vector<std::wstring> hangman::import_words(std::wstring path)
 {
-	std::vector<std::string> word_list;
-	std::fstream file(path);
-	std::string word;
+	std::vector<std::wstring> word_list;
+	std::wfstream file(path);
+	std::wstring word;
 	while (file >> word) word_list.push_back(word);
 	file.close();
 	return word_list;
 }
 
-std::string hangman::get_input()
+std::wstring hangman::get_input()
 {
-	std::string out = "";
+	std::wstring out = L"";
 	int state = 1;
-	std::cout << "Guess a letter/word:\n";
+	std::wcout << L"Guess a letter/word:\n";
 	while (state) {
-		if (state == 2) std::cout << "Your input contains invalid characters, try again:\n";
-		if (state == 3) std::cout << "You have already guessed that, try again:\n";
-		std::cin >> out;
+		if (state == 2) std::wcout << L"Your input contains invalid characters, try again:\n";
+		if (state == 3) std::wcout << L"You have already guessed that, try again:\n";
+		std::wcin >> out;
 		state = 0;
-		for (char& c : out) {
+		for (wchar_t& c : out) {
 			if(c < 'a') c += 'a' - 'A';
 			if ('a' > c || c > 'z') {
 				state = 2;
@@ -79,27 +79,27 @@ std::string hangman::get_input()
 
 void hangman::draw_hangman()
 {
-	std::cout << " +------+       \n";
-	std::cout << " |      |       \n";
-	std::string hangman_ = 
-		" |      O       \n"
-		" |     /|\\     \n"
-		" |     / \\     \n";
+	std::wcout << L" +------+       \n";
+	std::wcout << L" |      |       \n";
+	std::wstring hangman_ = 
+		L" |      O       \n"
+		L" |     /|\\     \n"
+		L" |     / \\     \n";
 	int mask[] = { 8, 25, 24, 26, 40, 42 };
 	for (int i = 5; i >= misses; i--) {
 		hangman_[mask[i]] = ' ';
 	}
-	std::cout << hangman_;
-	std::cout << " |              \n";
-	std::cout << "/ \\            \n";
-	std::cout << "----------------\n";
-	std::cout << "\n";
+	std::wcout << hangman_;
+	std::wcout << L" |              \n";
+	std::wcout << L"/ \\            \n";
+	std::wcout << L"----------------\n";
+	std::wcout << L"\n";
 }
 
 void hangman::draw_word()
 {
-	std::cout << "Word: " << char_list << '\n';
-	std::cout << "Guesses: " << guesses << "\n\n";
+	std::wcout << L"Word: " << char_list << '\n';
+	std::wcout << L"Guesses: " << guesses << L"\n\n";
 }
 
 char hangman::win_lose_continue()
@@ -109,7 +109,7 @@ char hangman::win_lose_continue()
  	return 'w';
 }
 
-bool hangman::uppdate_char_list(std::string str)
+bool hangman::uppdate_char_list(std::wstring str)
 {
 	bool mis = true;
 	if (str.size() == 1) {
@@ -130,18 +130,18 @@ bool hangman::uppdate_char_list(std::string str)
 void hangman::draw_win()
 {
 	
-	std::cout << '\n';
-	std::cout << "\t#################\n";
-	std::cout << "\t##   You win   ##\n";
-	std::cout << "\t#################\n\n";
+	std::wcout << '\n';
+	std::wcout << L"\t#################\n";
+	std::wcout << L"\t##   You win   ##\n";
+	std::wcout << L"\t#################\n\n";
 	draw_word();
 }
 
 void hangman::draw_lose()
 {
 	draw_hangman();
-	std::cout << "\t##################\n";
-	std::cout << "\t##   You lose   ##\n";
-	std::cout << "\t##################\n";
-	std::cout << "\n\t" << word << '\n';
+	std::wcout << L"\t##################\n";
+	std::wcout << L"\t##   You lose   ##\n";
+	std::wcout << L"\t##################\n";
+	std::wcout << L"\n\t" << word << '\n';
 }
