@@ -16,7 +16,7 @@ class hangman {
 	void draw_hangman();
 	void draw_word();
 	char win_lose_continue();
-	bool uppdate_char_list(std::wstring); 
+	bool update_char_list(std::wstring); 
 
 	void draw_win();
 	void draw_lose();
