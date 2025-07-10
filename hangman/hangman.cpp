@@ -21,7 +21,7 @@ void hangman::play()
 		std::wstring guess = get_input();
 		guesses += guess;
 		guesses += ' ';
-		misses += uppdate_char_list(guess);
+		misses += update_char_list(guess);
 		game_stat = win_lose_continue();
 		std::system("cls");
 		if (game_stat == 'w') {
@@ -109,7 +109,7 @@ char hangman::win_lose_continue()
  	return 'w';
 }
 
-bool hangman::uppdate_char_list(std::wstring str)
+bool hangman::update_char_list(std::wstring str)
 {
 	bool mis = true;
 	if (str.size() == 1) {
